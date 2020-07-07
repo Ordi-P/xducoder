@@ -91,6 +91,14 @@ public class Operator {
         try {
             src = nbDao.selectByPrimaryKey(nbId);
             user = userDao.selectByPrimaryKey(src.getUserID());
+
+            NotebookExample example = new NotebookExample();
+            example.createCriteria().andSrcIDEqualTo(nbId);
+            List<Notebook> notebooks = nbDao.selectByExample(example);
+            for (Notebook notebook : notebooks){
+                notebook.setSrcID(null);
+                nbDao.updateByPrimaryKey(notebook);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
