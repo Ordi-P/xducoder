@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: root
-    password: xducoder
+    username: steve
+    password: 123456
     url: jdbc:mysql://47.100.185.208:3306/XDUcoder?serverTimezone=GMT
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -15,3 +15,5 @@ spring:
 mybatis:
   type-aliases-package: com.xdu.xducoder.Dao
   mapper-locations: classpath:Mapper/*.xml
+server:
+  port: 8384
