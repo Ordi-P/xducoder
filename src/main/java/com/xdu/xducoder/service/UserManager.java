@@ -1,13 +1,17 @@
 package com.xdu.xducoder.service;
 
 import com.raincur.exception.UserNotFoundException;
+import com.xdu.xducoder.Dao.NotebookMapper;
 import com.xdu.xducoder.Dao.UserinfoMapper;
+import com.xdu.xducoder.Entity.Notebook;
+import com.xdu.xducoder.Entity.NotebookExample;
 import com.xdu.xducoder.Entity.Userinfo;
 import com.xdu.xducoder.Entity.noteBook.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 
 @Service
 public class UserManager {
@@ -15,6 +19,8 @@ public class UserManager {
     private static final String root = "/home/jupyter";
     @Autowired
     private UserinfoMapper userDao;
+    @Autowired
+    private NotebookMapper nbDao;
 
     public boolean createUser(String userId, String name){
         // 用户路径
@@ -39,6 +45,13 @@ public class UserManager {
             file = new File(user.getPath());
         } catch (Exception e) {
             throw new UserNotFoundException(userId, e);
+        }
+        NotebookExample example = new NotebookExample();
+        example.createCriteria().andUserIDEqualTo(userId);
+        List<Notebook> notebooks = nbDao.selectByExample(example);
+        Operator operator = new Operator();
+        for (Notebook notebook : notebooks){
+            operator.deleteNb(notebook.getNbID());
         }
         if (!file.exists()) return false;
         boolean flag = file.delete();
