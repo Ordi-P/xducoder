@@ -22,14 +22,13 @@ public class Operator {
     @Autowired
     public UserinfoMapper userDao;
 
-    // 项目的根目录,这里一定要注意!!!!!!!!!!!
-    static private String root = "/home/jupyter";
-
     // 将一个笔记本拷贝到目标目录下
     public boolean copyNbToUser(Notebook src, String tarUserId){
         Userinfo tarUser;
+        Userinfo srcUser;
         try {
             tarUser = userDao.selectByPrimaryKey(tarUserId);
+            srcUser = userDao.selectByPrimaryKey(src.getUserID());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -37,17 +36,15 @@ public class Operator {
 
         // 目标笔记本的信息,笔记本id是自动生成的
         String tarNbId = tarUserId + Long.toHexString(System.currentTimeMillis());
-        String tarPath = tarUser.getPath() + File.pathSeparator +
-                        src.getPath() + File.pathSeparator +
-                        src.getName();
-
-        String srcPath = src.getPath() + File.pathSeparator + src.getName();
+        String tarPath = tarUser.getPath() + "/"+ src.getPath() + "/" + src.getName();
+        // 源笔记本的路径
+        String srcPath = srcUser.getPath() + "/" + src.getPath() + "/" + src.getName();
         // 复制
         try {
             Files.copy(Paths.get(srcPath), Paths.get(tarPath));
             Runtime.getRuntime().exec("chmod 777 " + tarPath);
             // 更新数据库
-            Notebook tar = new Notebook(tarNbId, src.getName(), tarPath, src.getNbID(), src.getNbID());
+            Notebook tar = new Notebook(tarNbId, src.getName(), tarPath, src.getNbID(), src.getPath());
             nbDao.insert(tar);
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,7 +69,6 @@ public class Operator {
         // 源笔记本
         List<Notebook> src;
         try {
-//            src = nbDao.queryByOwnerIdAndName(ownerId, path, name);
             NotebookExample example = new NotebookExample();
             example.createCriteria().andPathEqualTo(path).andUserIDEqualTo(UserID).andNameEqualTo(name);
             src = nbDao.selectByExample(example);
@@ -91,13 +87,15 @@ public class Operator {
     // 删除一个笔记本,通过其id
     public boolean deleteNb(String nbId){
         Notebook src = null;
+        Userinfo user = null;
         try {
             src = nbDao.selectByPrimaryKey(nbId);
+            user = userDao.selectByPrimaryKey(src.getUserID());
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        String path = src.getPath() + " " + src.getName();
+        String path = user.getPath() + "/" + src.getPath() + "/" + src.getName();
         try {
             Files.delete(Paths.get(path));
             nbDao.deleteByPrimaryKey(nbId);
@@ -107,4 +105,43 @@ public class Operator {
         }
         return true;
     }
+
+    // 重置一个笔记本,此笔记本必须是复制得来的笔记本
+    public boolean resetNb(String nbId){
+        Notebook tarNb, srcNb;
+        tarNb = nbDao.selectByPrimaryKey(nbId);
+        if (tarNb == null || tarNb.getSrcID() == null) return false;
+        srcNb = nbDao.selectByPrimaryKey(tarNb.getSrcID());
+
+        String srcPath = userDao.selectByPrimaryKey(srcNb.getUserID()).getPath()
+                + "/" + srcNb.getPath() + "/" + srcNb.getName();
+        String tarPath = userDao.selectByPrimaryKey(tarNb.getUserID()).getPath()
+                + "/" + tarNb.getPath() + "/" + tarNb.getName();
+        File src = new File(srcPath);
+        File tar = new File(tarPath);
+
+        if (!src.exists()){
+            System.out.println("[error] 源笔记本不存在,源笔记本: " + src);
+            return false;
+        }
+        if (!tar.exists()){
+            System.out.println("[error] 目标笔记本不存在,目标笔记本: " + tar);
+            return false;
+        }
+
+        try {
+            if(!tar.delete()){
+                System.out.println("[error] 笔记本无法被删除,笔记本: " + tar);
+                return false;
+            }
+            Files.copy(src.toPath(), tar.toPath());
+            nbDao.deleteByPrimaryKey(nbId);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
 }
