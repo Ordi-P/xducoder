@@ -7,10 +7,12 @@ import com.xdu.xducoder.Entity.Notebook;
 import com.xdu.xducoder.Entity.NotebookExample;
 import com.xdu.xducoder.Entity.Userinfo;
 import com.xdu.xducoder.Entity.noteBook.UserVO;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -46,6 +48,8 @@ public class UserManager {
         } catch (Exception e) {
             throw new UserNotFoundException(userId, e);
         }
+
+        // 删除用户所有笔记本
         NotebookExample example = new NotebookExample();
         example.createCriteria().andUserIDEqualTo(userId);
         List<Notebook> notebooks = nbDao.selectByExample(example);
@@ -53,10 +57,15 @@ public class UserManager {
         for (Notebook notebook : notebooks){
             operator.deleteNb(notebook.getNbID());
         }
-        if (!file.exists()) return false;
-        boolean flag = file.delete();
-        if (flag) System.out.println("[info] 删除用户,用户信息为: " + user);
-        else System.out.println("[warning] 删除用户失败! 用户信息为: " + user);
-        return flag;
+
+        try {
+            FileUtils.deleteDirectory(file);
+            System.out.println("[info] 删除用户,用户信息为: " + user);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("[warning] 删除用户失败! 用户信息为: " + user);
+            return false;
+        }
+        return true;
     }
 }
