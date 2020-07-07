@@ -70,4 +70,9 @@ public class notebookController {
             return false;
         }
     }
+
+    @PostMapping("/resetNoteBookByNbID")
+    public boolean resetNoteBookByNbID(@RequestBody HashMap map){
+        return notebook.resetNb(map.get("nbId").toString());
+    }
 }
