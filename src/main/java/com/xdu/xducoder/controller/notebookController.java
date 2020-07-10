@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 
-@CrossOrigin
+@CrossOrigin(allowCredentials="true",origins = "*",maxAge = 3600)
 @RestController
 public class notebookController {
     @Autowired
