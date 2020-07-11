@@ -36,8 +36,8 @@
 
         <!-- jdbc连接-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://47.100.185.208:3306/XDUcoder?serverTimezone=GMT" userId="root"
-                        password="xducoder"/>
+                        connectionURL="jdbc:mysql://47.100.185.208:3306/XDUcoder?serverTimezone=GMT" userId="steve"
+                        password="123456"/>
 
         <!-- 类型转换 -->
         <javaTypeResolver>
