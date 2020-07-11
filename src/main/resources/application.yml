@@ -1,7 +1,7 @@
 spring:
   datasource:
-    username: root
-    password: xducoder
+    username: steve
+    password: 123456
     url: jdbc:mysql://47.100.185.208:3306/XDUcoder?serverTimezone=GMT
     driver-class-name: com.mysql.cj.jdbc.Driver
 
@@ -10,8 +10,12 @@ spring:
       maximum-pool-size: 10
       max-lifetime: 30000   #不能小于30秒，否则默认回到1800秒
       connection-test-query: SELECT 1
+  mvc:
+    dispatch-options-request: true
 
 #整合mybatis的配置
 mybatis:
   type-aliases-package: com.xdu.xducoder.Dao
   mapper-locations: classpath:Mapper/*.xml
+server:
+  port: 8384

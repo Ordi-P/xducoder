@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(allowCredentials="true",origins = "*",maxAge = 3600)
 public class JupyterLoginController {
     @Autowired
     ChoosecourseMapper choosecourseMapper;

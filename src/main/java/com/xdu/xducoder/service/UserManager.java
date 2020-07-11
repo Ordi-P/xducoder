@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class UserManager {
     // 注意路径
-    private static final String root = "/home/jupyter";
+    private static final String root = "/home/guest/jupyter";
     @Autowired
     private UserinfoMapper userDao;
     @Autowired
