@@ -8,6 +8,8 @@ import com.xdu.xducoder.Entity.NotebookExample;
 import com.xdu.xducoder.Entity.Userinfo;
 import com.xdu.xducoder.Entity.noteBook.UserVO;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,28 +26,35 @@ public class UserManager {
     @Autowired
     private NotebookMapper nbDao;
 
+    private Logger logger = LoggerFactory.getLogger(UserManager.class);
+
     public boolean createUser(String userId, String name){
+        logger.debug(String.format("创建用户,userId: %s, name: %s", userId, name));
         // 用户路径
         String path = root + "/" + userId + name;
         File file = new File(path);
         boolean flag = false;
         if (!file.exists()){
-            System.out.println(file);
             flag = file.mkdir();
+            logger.debug(String.format("创建用户目录,path: %s", file.toString()));
+        }else{
+            logger.warn(String.format("用户目录已存在!path: %s", file.toString()));
         }
         if (!flag) return false;
         UserVO user = new UserVO(userId, name, path);
-        System.out.println("[info] 创建用户,用户信息为: " + user);
+        logger.info("成功创建用户,用户信息为: " + user);
         return true;
     }
 
     public boolean deleteUser(String userId) throws UserNotFoundException {
+        logger.debug(String.format("删除用户,userId: %s", userId));
         File file;
         Userinfo user;
         try {
             user = userDao.selectByPrimaryKey(userId);
             file = new File(user.getPath());
         } catch (Exception e) {
+            logger.error(String.format("用户未找到!userId: %s", userId));
             throw new UserNotFoundException(userId, e);
         }
 
@@ -56,16 +65,18 @@ public class UserManager {
         Operator operator = new Operator();
         for (Notebook notebook : notebooks){
             operator.deleteNb(notebook.getNbID());
+            logger.debug(String.format("删除笔记本,ndId: %s", notebook.getNbID()));
         }
 
         try {
             FileUtils.deleteDirectory(file);
-            System.out.println("[info] 删除用户,用户信息为: " + user);
+            logger.info(String.format("删除用户目录,path: %s", file.toString()));
         } catch (IOException e) {
+            logger.error(String.format("用户目录未找到!path: %s", file.toString()));
             e.printStackTrace();
-            System.out.println("[warning] 删除用户失败! 用户信息为: " + user);
             return false;
         }
+        logger.info(String.format("删除用户成功!userId: %s", userId));
         return true;
     }
 }
