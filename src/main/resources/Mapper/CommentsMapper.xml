@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdu.xducoder.Dao.CommentsMapper">
+  <resultMap id="BaseResultMap" type="com.xdu.xducoder.Entity.Comments">
+    <id column="CourseID" jdbcType="CHAR" property="courseID" />
+    <id column="CommentID" jdbcType="CHAR" property="commentID" />
+    <result column="CommentTitle" jdbcType="VARCHAR" property="commentTitle" />
+    <result column="Comment" jdbcType="VARCHAR" property="comment" />
+    <result column="CommentUser" jdbcType="VARCHAR" property="commentUser" />
+    <result column="CommentDate" jdbcType="TIMESTAMP" property="commentDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xdu.xducoder.Entity.Comments">
+    <result column="CommentType" jdbcType="BINARY" property="commentType" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    CourseID, CommentID, CommentTitle, `Comment`, CommentUser, CommentDate
+  </sql>
+  <sql id="Blob_Column_List">
+    CommentType
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xdu.xducoder.Entity.CommentsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comments
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xdu.xducoder.Entity.CommentsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from comments
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="map" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from comments
+    where CourseID = #{courseID,jdbcType=CHAR}
+      and CommentID = #{commentID,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from comments
+    where CourseID = #{courseID,jdbcType=CHAR}
+      and CommentID = #{commentID,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xdu.xducoder.Entity.CommentsExample">
+    delete from comments
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xdu.xducoder.Entity.Comments">
+    insert into comments (CourseID, CommentID, CommentTitle, 
+      `Comment`, CommentUser, CommentDate, 
+      CommentType)
+    values (#{courseID,jdbcType=CHAR}, #{commentID,jdbcType=CHAR}, #{commentTitle,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR}, #{commentUser,jdbcType=VARCHAR}, #{commentDate,jdbcType=TIMESTAMP}, 
+      #{commentType,jdbcType=BINARY})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xdu.xducoder.Entity.Comments">
+    insert into comments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="courseID != null">
+        CourseID,
+      </if>
+      <if test="commentID != null">
+        CommentID,
+      </if>
+      <if test="commentTitle != null">
+        CommentTitle,
+      </if>
+      <if test="comment != null">
+        `Comment`,
+      </if>
+      <if test="commentUser != null">
+        CommentUser,
+      </if>
+      <if test="commentDate != null">
+        CommentDate,
+      </if>
+      <if test="commentType != null">
+        CommentType,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="courseID != null">
+        #{courseID,jdbcType=CHAR},
+      </if>
+      <if test="commentID != null">
+        #{commentID,jdbcType=CHAR},
+      </if>
+      <if test="commentTitle != null">
+        #{commentTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commentUser != null">
+        #{commentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="commentDate != null">
+        #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentType != null">
+        #{commentType,jdbcType=BINARY},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByExampleSelective" parameterType="map">
+    update comments
+    <set>
+      <if test="record.courseID != null">
+        CourseID = #{record.courseID,jdbcType=CHAR},
+      </if>
+      <if test="record.commentID != null">
+        CommentID = #{record.commentID,jdbcType=CHAR},
+      </if>
+      <if test="record.commentTitle != null">
+        CommentTitle = #{record.commentTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null">
+        `Comment` = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentUser != null">
+        CommentUser = #{record.commentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.commentDate != null">
+        CommentDate = #{record.commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.commentType != null">
+        CommentType = #{record.commentType,jdbcType=BINARY},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update comments
+    set CourseID = #{record.courseID,jdbcType=CHAR},
+      CommentID = #{record.commentID,jdbcType=CHAR},
+      CommentTitle = #{record.commentTitle,jdbcType=VARCHAR},
+      `Comment` = #{record.comment,jdbcType=VARCHAR},
+      CommentUser = #{record.commentUser,jdbcType=VARCHAR},
+      CommentDate = #{record.commentDate,jdbcType=TIMESTAMP},
+      CommentType = #{record.commentType,jdbcType=BINARY}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update comments
+    set CourseID = #{record.courseID,jdbcType=CHAR},
+      CommentID = #{record.commentID,jdbcType=CHAR},
+      CommentTitle = #{record.commentTitle,jdbcType=VARCHAR},
+      `Comment` = #{record.comment,jdbcType=VARCHAR},
+      CommentUser = #{record.commentUser,jdbcType=VARCHAR},
+      CommentDate = #{record.commentDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xdu.xducoder.Entity.Comments">
+    update comments
+    <set>
+      <if test="commentTitle != null">
+        CommentTitle = #{commentTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null">
+        `Comment` = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="commentUser != null">
+        CommentUser = #{commentUser,jdbcType=VARCHAR},
+      </if>
+      <if test="commentDate != null">
+        CommentDate = #{commentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commentType != null">
+        CommentType = #{commentType,jdbcType=BINARY},
+      </if>
+    </set>
+    where CourseID = #{courseID,jdbcType=CHAR}
+      and CommentID = #{commentID,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xdu.xducoder.Entity.Comments">
+    update comments
+    set CommentTitle = #{commentTitle,jdbcType=VARCHAR},
+      `Comment` = #{comment,jdbcType=VARCHAR},
+      CommentUser = #{commentUser,jdbcType=VARCHAR},
+      CommentDate = #{commentDate,jdbcType=TIMESTAMP},
+      CommentType = #{commentType,jdbcType=BINARY}
+    where CourseID = #{courseID,jdbcType=CHAR}
+      and CommentID = #{commentID,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xdu.xducoder.Entity.Comments">
+    update comments
+    set CommentTitle = #{commentTitle,jdbcType=VARCHAR},
+      `Comment` = #{comment,jdbcType=VARCHAR},
+      CommentUser = #{commentUser,jdbcType=VARCHAR},
+      CommentDate = #{commentDate,jdbcType=TIMESTAMP}
+    where CourseID = #{courseID,jdbcType=CHAR}
+      and CommentID = #{commentID,jdbcType=CHAR}
+  </update>
+</mapper>
