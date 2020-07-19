@@ -39,6 +39,7 @@ public class UserManager {
             logger.debug(String.format("创建用户目录,path: %s", file.toString()));
         }else{
             logger.warn(String.format("用户目录已存在!path: %s", file.toString()));
+            flag = true;
         }
         if (!flag) return false;
         UserVO user = new UserVO(userId, name, path);

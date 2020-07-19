@@ -3,6 +3,7 @@ package com.xdu.xducoder.Entity;
 import java.io.Serializable;
 import java.util.Date;
 
+
 public class Choosecourse implements Serializable {
     private String STDNum;
 
@@ -17,6 +18,8 @@ public class Choosecourse implements Serializable {
     private byte[] courseScore;
 
     private static final long serialVersionUID = 1L;
+
+
 
     public String getSTDNum() {
         return STDNum;
@@ -63,6 +66,15 @@ public class Choosecourse implements Serializable {
     }
 
     public void setCourseScore(byte[] courseScore) {
+        this.courseScore = courseScore;
+    }
+
+    public Choosecourse(String STDNum, String courseID, Integer stepID, Date regDate, Date completeDate, byte[] courseScore) {
+        this.STDNum = STDNum;
+        this.courseID = courseID;
+        this.stepID = stepID;
+        this.regDate = regDate;
+        this.completeDate = completeDate;
         this.courseScore = courseScore;
     }
 

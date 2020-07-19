@@ -10,6 +10,10 @@
     <result column="CourseDescription" jdbcType="VARCHAR" property="courseDescription" />
     <result column="coverUrl" jdbcType="VARCHAR" property="coverUrl" />
   </resultMap>
+  <select id="list" resultType="com.raincur.Entity.Course">
+        select *
+        from course
+    </select>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
