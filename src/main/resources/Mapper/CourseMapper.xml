@@ -10,7 +10,7 @@
     <result column="CourseDescription" jdbcType="VARCHAR" property="courseDescription" />
     <result column="coverUrl" jdbcType="VARCHAR" property="coverUrl" />
   </resultMap>
-  <select id="list" resultType="com.raincur.Entity.Course">
+  <select id="list" resultType="com.xdu.xducoder.Entity.Course">
         select *
         from course
     </select>
