@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface CourseMapper {
+    List<Course> list();
     int deleteByExample(CourseExample example);
 
     int deleteByPrimaryKey(String courseID);
