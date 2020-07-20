@@ -29,14 +29,14 @@ public class Operator {
     // 将一个笔记本拷贝到目标目录下
     public boolean copyNbToUser(Notebook src, String tarUserId){
         logger.debug(String.format("复制笔记本,src: %s, tarUserId: %s", src.toString(), tarUserId));
-        Userinfo tarUser;
-        Userinfo srcUser;
-        try {
-            tarUser = userDao.selectByPrimaryKey(tarUserId);
-            srcUser = userDao.selectByPrimaryKey(src.getUserID());
-        } catch (Exception e) {
-            logger.error(String.format("用户未找到!srcUserId: %s, tarUserId: %s", src.getUserID(), tarUserId));
-            e.printStackTrace();
+        Userinfo tarUser = userDao.selectByPrimaryKey(tarUserId);;
+        Userinfo srcUser = userDao.selectByPrimaryKey(src.getUserID());;
+        if (srcUser == null){
+            logger.error(String.format("用户未找到!srcUserId: %s", src.getUserID()));
+            return false;
+        }
+        if (tarUser == null){
+            logger.error(String.format("用户未找到!tarUserId: %s", tarUserId));
             return false;
         }
 
@@ -66,13 +66,10 @@ public class Operator {
 
     public boolean copyNbToUser(String nbId, String tarUserId){
         logger.debug(String.format("copyNbToUser(nbId: %s, tarUserId: %s)", nbId, tarUserId));
-        Notebook src;
-        try {
-            logger.debug(String.format("查找笔记本,nbId: %s", nbId));
-            src = nbDao.selectByPrimaryKey(nbId);
-        } catch (Exception e) {
+        logger.debug(String.format("查找笔记本,nbId: %s", nbId));
+        Notebook src = nbDao.selectByPrimaryKey(nbId);
+        if (src == null) {
             logger.error(String.format("笔记本为找到!nbId: %s", nbId));
-            e.printStackTrace();
             return false;
         }
         logger.debug("copyNbToUser(Notebook src, String tarUserId)");
@@ -86,21 +83,15 @@ public class Operator {
                 UserID, path, name, tarUserId));
         // 源笔记本
         List<Notebook> src;
-        try {
-            logger.debug("查询数据库");
-            NotebookExample example = new NotebookExample();
-            example.createCriteria().andPathEqualTo(path).andUserIDEqualTo(UserID).andNameEqualTo(name);
-            src = nbDao.selectByExample(example);
-            if (src.size() == 1){
-                logger.debug("copyNbToUser(Notebook src, String tarUserId)");
-                return copyNbToUser(src.get(0), tarUserId);
-            } else {
-                logger.error(String.format("结果数量为%d,不为一!", src.size()));
-                throw new Exception();
-            }
-        } catch (Exception e) {
-            logger.error("查询失败!");
-            e.printStackTrace();
+        logger.debug("查询数据库");
+        NotebookExample example = new NotebookExample();
+        example.createCriteria().andPathEqualTo(path).andUserIDEqualTo(UserID).andNameEqualTo(name);
+        src = nbDao.selectByExample(example);
+        if (src.size() == 1){
+            logger.debug("copyNbToUser(Notebook src, String tarUserId)");
+            return copyNbToUser(src.get(0), tarUserId);
+        } else {
+            logger.error(String.format("结果数量为%d,不为一!", src.size()));
             return false;
         }
     }
@@ -108,27 +99,29 @@ public class Operator {
     // 删除一个笔记本,通过其id
     public boolean deleteNb(String nbId){
         logger.debug(String.format("deleteNb(nbId: %s)", nbId));
-        Notebook src = null;
-        Userinfo user = null;
-        try {
-            logger.debug(String.format("查询笔记本,nbId: %s", nbId));
-            src = nbDao.selectByPrimaryKey(nbId);
-            user = userDao.selectByPrimaryKey(src.getUserID());
 
-            NotebookExample example = new NotebookExample();
-            example.createCriteria().andSrcIDEqualTo(nbId);
-            List<Notebook> notebooks = nbDao.selectByExample(example);
-            for (Notebook notebook : notebooks){
-                logger.debug(String.format("删除依赖,nbId: %s, srcId: %s", notebook.getNbID(), notebook.getSrcID()));
-                notebook.setSrcID(null);
-                nbDao.updateByPrimaryKey(notebook);
-            }
-
-        } catch (Exception e) {
+        logger.debug(String.format("查询笔记本,nbId: %s", nbId));
+        Notebook src = nbDao.selectByPrimaryKey(nbId);
+        if (src == null){
             logger.error(String.format("未找到笔记本,nbId: %s", nbId));
-            e.printStackTrace();
             return false;
         }
+        logger.debug(String.format("查询用户,userId: %s", src.getUserID()));
+        Userinfo user = userDao.selectByPrimaryKey(src.getUserID());
+        if (user == null){
+            logger.error(String.format("用户未找到,userId: %s", src.getUserID()));
+            return false;
+        }
+
+        NotebookExample example = new NotebookExample();
+        example.createCriteria().andSrcIDEqualTo(nbId);
+        List<Notebook> notebooks = nbDao.selectByExample(example);
+        for (Notebook notebook : notebooks){
+            logger.debug(String.format("删除依赖,nbId: %s, srcId: %s", notebook.getNbID(), notebook.getSrcID()));
+            notebook.setSrcID(null);
+            nbDao.updateByPrimaryKey(notebook);
+        }
+
         String path = user.getPath() + "/" + src.getPath() + "/" + src.getName();
         try {
             logger.debug(String.format("删除文件,path: %s", path));
