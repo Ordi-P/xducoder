@@ -59,7 +59,7 @@ public class Operator {
 
         // 目标笔记本的信息,笔记本id是自动生成的
         String tarNbId = tarUserId + Long.toHexString(System.currentTimeMillis());
-        String tarPath = tarUser.getPath() + "/"+ src.getPath() + "/" + src.getName();
+        String tarPath = tarUser.getPath() + "/"+ src.getPath();
         // 源笔记本的路径
         String srcPath = srcUser.getPath() + "/" + src.getPath() + "/" + src.getName();
 
@@ -69,7 +69,7 @@ public class Operator {
             Files.copy(Paths.get(srcPath), Paths.get(tarPath));
             Runtime.getRuntime().exec("chmod 777 " + tarPath);
             // 更新数据库
-            Notebook tar = new Notebook(tarNbId, src.getName(), tarPath, src.getNbID(), src.getPath());
+            Notebook tar = new Notebook(tarNbId, src.getName(), tarUserId, src.getNbID(), tarPath);
             nbDao.insert(tar);
             logger.debug(String.format("更新NoteBook数据库,插入: %s", tar.toString()));
         } catch (IOException e) {
