@@ -33,7 +33,8 @@ public class Operator {
 
         NotebookExample ne = new NotebookExample();
         ne.createCriteria().andSrcIDEqualTo(src.getNbID()).andUserIDEqualTo(tarUserId);
-        if (nbDao.selectByExample(ne).size() > 0) {
+        List<Notebook> nbs = nbDao.selectByExample(ne);
+        if (nbs == null || nbs.size() > 0) {
             logger.warn(String.format("笔记本已经存在! src: %s, tarUserId: %s",src.toString(), tarUserId));
             return false;
         }
