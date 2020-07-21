@@ -40,7 +40,7 @@ public class Operator {
         }
 
         UserinfoExample example1 = new UserinfoExample();
-        example1.createCriteria().andUserIDEqualTo(src.getNbID());
+        example1.createCriteria().andUserIDEqualTo(src.getUserID());
         List<Userinfo> userinfos = userDao.selectByExample(example1);
         if (userinfos == null || userinfos.size() != 1){
             logger.error(String.format("用户未找到!srcUserId: %s", src.getUserID()));
