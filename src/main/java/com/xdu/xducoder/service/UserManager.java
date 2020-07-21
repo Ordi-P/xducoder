@@ -34,7 +34,7 @@ public class UserManager {
         // 用户路径
         String path = root + "/" + userId + name;
         File file = new File(path);
-        boolean flag = false;
+        boolean flag;
         if (!file.exists()){
             flag = file.mkdir();
             logger.debug(String.format("创建用户目录,path: %s", file.toString()));
@@ -52,11 +52,12 @@ public class UserManager {
         logger.debug(String.format("删除用户,userId: %s", userId));
         UserinfoExample userExample = new UserinfoExample();
         userExample.createCriteria().andUserIDEqualTo(userId);
-        Userinfo user = (Userinfo) userDao.selectByExample(userExample);
-        if (user == null){
+        List<Userinfo> userinfos = userDao.selectByExample(userExample);
+        if (userinfos == null || userinfos.size() == 0){
             logger.error(String.format("用户未找到!userId: %s", userId));
             throw new UserNotFoundException(userId);
         }
+        Userinfo user = userinfos.get(0);
 
         File file = new File(user.getPath());
         // 删除用户所有笔记本
