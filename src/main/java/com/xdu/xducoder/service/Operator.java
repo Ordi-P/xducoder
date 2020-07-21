@@ -69,7 +69,7 @@ public class Operator {
         logger.debug(String.format("查找笔记本,nbId: %s", nbId));
         Notebook src = nbDao.selectByPrimaryKey(nbId);
         if (src == null) {
-            logger.error(String.format("笔记本为找到!nbId: %s", nbId));
+            logger.error(String.format("笔记本未找到!nbId: %s", nbId));
             return false;
         }
         logger.debug("copyNbToUser(Notebook src, String tarUserId)");
@@ -99,7 +99,6 @@ public class Operator {
     // 删除一个笔记本,通过其id
     public boolean deleteNb(String nbId){
         logger.debug(String.format("deleteNb(nbId: %s)", nbId));
-
         logger.debug(String.format("查询笔记本,nbId: %s", nbId));
         Notebook src = nbDao.selectByPrimaryKey(nbId);
         if (src == null){

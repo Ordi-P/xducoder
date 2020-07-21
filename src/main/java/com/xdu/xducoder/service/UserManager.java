@@ -49,16 +49,12 @@ public class UserManager {
 
     public boolean deleteUser(String userId) throws UserNotFoundException {
         logger.debug(String.format("删除用户,userId: %s", userId));
-        File file;
-        Userinfo user;
-        try {
-            user = userDao.selectByPrimaryKey(userId);
-            file = new File(user.getPath());
-        } catch (Exception e) {
+        Userinfo user = userDao.selectByPrimaryKey(userId);
+        if (user == null){
             logger.error(String.format("用户未找到!userId: %s", userId));
-            throw new UserNotFoundException(userId, e);
+            throw new UserNotFoundException(userId);
         }
-
+        File file = new File(user.getPath());
         // 删除用户所有笔记本
         NotebookExample example = new NotebookExample();
         example.createCriteria().andUserIDEqualTo(userId);

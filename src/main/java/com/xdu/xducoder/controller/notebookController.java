@@ -26,27 +26,27 @@ public class notebookController {
 
     @PostMapping("/copyNbToUserBySrc")
     public boolean copyNbToUserByNbId(@RequestBody HashMap map){
-        notebook.copyNbToUser(map.get("nbID").toString(),map.get("tarUserID").toString());
-        return true;
+        return notebook.copyNbToUser(
+                map.get("nbID").toString(),
+                map.get("tarUserID").toString()
+                );
     }
 
     @PostMapping("/copyNbToUserByM")
     public boolean copyNbToUserByM(@RequestBody HashMap map){
-        notebook.copyNbToUser(
+        return notebook.copyNbToUser(
                 map.get("UserID").toString(),
                 map.get("path").toString(),
                 map.get("name").toString(),
                 map.get("tarUserId").toString()
                 );
-        return true;
     }
 
     @PostMapping("/deleteNbBynbID")
     public boolean deleteNb(@RequestBody HashMap map){
-        notebook.deleteNb(
+        return notebook.deleteNb(
                 map.get("nbId").toString()
         );
-        return true;
     }
 
     @PostMapping("/selectNbIDByUserID")
