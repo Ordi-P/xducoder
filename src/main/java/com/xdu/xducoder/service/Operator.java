@@ -40,7 +40,7 @@ public class Operator {
         }
 
         UserinfoExample example1 = new UserinfoExample();
-        example1.createCriteria().andUserIDEqualTo(tarUserId);
+        example1.createCriteria().andUserIDEqualTo(src.getNbID());
         List<Userinfo> userinfos = userDao.selectByExample(example1);
         if (userinfos == null || userinfos.size() != 1){
             logger.error(String.format("用户未找到!srcUserId: %s", src.getUserID()));
@@ -49,7 +49,7 @@ public class Operator {
         Userinfo srcUser = userinfos.get(0);
 
         UserinfoExample example2 = new UserinfoExample();
-        example2.createCriteria().andUserIDEqualTo(src.getUserID());
+        example2.createCriteria().andUserIDEqualTo(tarUserId);
         userinfos = userDao.selectByExample(example2);
         if (userinfos == null || userinfos.size() != 1){
             logger.error(String.format("用户未找到!tarUserId: %s", tarUserId));
