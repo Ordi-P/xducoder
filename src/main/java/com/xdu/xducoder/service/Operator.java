@@ -5,6 +5,7 @@ import com.xdu.xducoder.Dao.UserinfoMapper;
 import com.xdu.xducoder.Entity.Notebook;
 import com.xdu.xducoder.Entity.NotebookExample;
 import com.xdu.xducoder.Entity.Userinfo;
+import com.xdu.xducoder.Entity.UserinfoExample;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,27 @@ public class Operator {
     @Autowired
     public UserinfoMapper userDao;
 
-    private Logger logger = LoggerFactory.getLogger(Operator.class);
+    private final Logger logger = LoggerFactory.getLogger(Operator.class);
 
     // 将一个笔记本拷贝到目标目录下
     public boolean copyNbToUser(Notebook src, String tarUserId){
         logger.debug(String.format("复制笔记本,src: %s, tarUserId: %s", src.toString(), tarUserId));
-        Userinfo tarUser = userDao.selectByPrimaryKey(tarUserId);;
-        Userinfo srcUser = userDao.selectByPrimaryKey(src.getUserID());;
+
+        NotebookExample ne = new NotebookExample();
+        ne.createCriteria().andSrcIDEqualTo(src.getNbID()).andUserIDEqualTo(tarUserId);
+        if (nbDao.selectByExample(ne) != null) {
+            logger.warn(String.format("笔记本已经存在! src: %s, tarUserId: %s",src.toString(), tarUserId));
+            return false;
+        }
+
+        UserinfoExample example1 = new UserinfoExample();
+        example1.createCriteria().andUserIDEqualTo(tarUserId);
+        Userinfo tarUser = (Userinfo) userDao.selectByExample(example1);
+
+        UserinfoExample example2 = new UserinfoExample();
+        example2.createCriteria().andUserIDEqualTo(src.getUserID());
+        Userinfo srcUser = (Userinfo) userDao.selectByExample(example2);
+
         if (srcUser == null){
             logger.error(String.format("用户未找到!srcUserId: %s", src.getUserID()));
             return false;
@@ -56,8 +71,8 @@ public class Operator {
             nbDao.insert(tar);
             logger.debug(String.format("更新NoteBook数据库,插入: %s", tar.toString()));
         } catch (IOException e) {
-            e.printStackTrace();
             logger.error(String.format("复制失败!源文件path: %s, 目标path: %s", srcPath, tarPath));
+            e.printStackTrace();
             return false;
         }
         logger.info(String.format("复制笔记本成功!, src: %s, tarUserId: %s", src.toString(), tarUserId));
@@ -128,6 +143,7 @@ public class Operator {
             nbDao.deleteByPrimaryKey(nbId);
             logger.info(String.format("成功删除文件,path: %s", path));
         } catch (IOException e) {
+            logger.error(String.format("文件删除失败,path: %s", path));
             e.printStackTrace();
             return false;
         }

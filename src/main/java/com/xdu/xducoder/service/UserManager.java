@@ -6,6 +6,7 @@ import com.xdu.xducoder.Dao.UserinfoMapper;
 import com.xdu.xducoder.Entity.Notebook;
 import com.xdu.xducoder.Entity.NotebookExample;
 import com.xdu.xducoder.Entity.Userinfo;
+import com.xdu.xducoder.Entity.UserinfoExample;
 import com.xdu.xducoder.Entity.noteBook.UserVO;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -49,11 +50,14 @@ public class UserManager {
 
     public boolean deleteUser(String userId) throws UserNotFoundException {
         logger.debug(String.format("删除用户,userId: %s", userId));
-        Userinfo user = userDao.selectByPrimaryKey(userId);
+        UserinfoExample userExample = new UserinfoExample();
+        userExample.createCriteria().andUserIDEqualTo(userId);
+        Userinfo user = (Userinfo) userDao.selectByExample(userExample);
         if (user == null){
             logger.error(String.format("用户未找到!userId: %s", userId));
             throw new UserNotFoundException(userId);
         }
+
         File file = new File(user.getPath());
         // 删除用户所有笔记本
         NotebookExample example = new NotebookExample();
