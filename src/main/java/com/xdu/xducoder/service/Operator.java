@@ -41,20 +41,21 @@ public class Operator {
 
         UserinfoExample example1 = new UserinfoExample();
         example1.createCriteria().andUserIDEqualTo(tarUserId);
-        Userinfo tarUser = (Userinfo) userDao.selectByExample(example1);
-
-        UserinfoExample example2 = new UserinfoExample();
-        example2.createCriteria().andUserIDEqualTo(src.getUserID());
-        Userinfo srcUser = (Userinfo) userDao.selectByExample(example2);
-
-        if (srcUser == null){
+        List<Userinfo> userinfos = userDao.selectByExample(example1);
+        if (userinfos == null || userinfos.size() != 1){
             logger.error(String.format("用户未找到!srcUserId: %s", src.getUserID()));
             return false;
         }
-        if (tarUser == null){
+        Userinfo srcUser = userinfos.get(0);
+
+        UserinfoExample example2 = new UserinfoExample();
+        example2.createCriteria().andUserIDEqualTo(src.getUserID());
+        userinfos = userDao.selectByExample(example2);
+        if (userinfos == null || userinfos.size() != 1){
             logger.error(String.format("用户未找到!tarUserId: %s", tarUserId));
             return false;
         }
+        Userinfo tarUser = userinfos.get(0);
 
         // 目标笔记本的信息,笔记本id是自动生成的
         String tarNbId = tarUserId + Long.toHexString(System.currentTimeMillis());
