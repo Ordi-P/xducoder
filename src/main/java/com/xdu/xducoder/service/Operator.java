@@ -1,11 +1,9 @@
 package com.xdu.xducoder.service;
 
 import com.xdu.xducoder.Dao.NotebookMapper;
+import com.xdu.xducoder.Dao.StepsMapper;
 import com.xdu.xducoder.Dao.UserinfoMapper;
-import com.xdu.xducoder.Entity.Notebook;
-import com.xdu.xducoder.Entity.NotebookExample;
-import com.xdu.xducoder.Entity.Userinfo;
-import com.xdu.xducoder.Entity.UserinfoExample;
+import com.xdu.xducoder.Entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +22,8 @@ public class Operator {
     public NotebookMapper nbDao;
     @Autowired
     public UserinfoMapper userDao;
+    @Autowired
+    public StepsMapper stepDao;
 
     private final Logger logger = LoggerFactory.getLogger(Operator.class);
 
@@ -94,9 +94,11 @@ public class Operator {
         return copyNbToUser(src, tarUserId);
     }
 
-//    public boolean copyNbToUser(String courseId, String stepId, String strNum){
-//
-//    }
+    public boolean copyNbToUser(String courseId, int stepId, String strNum){
+        StepsExample example = new StepsExample();
+        example.createCriteria().andCourseIDEqualTo(courseId).andStepIDEqualTo(stepId);
+
+    }
 
 
     // 将一个笔记本拷贝到目标目录下
