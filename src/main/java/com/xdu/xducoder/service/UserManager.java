@@ -30,7 +30,7 @@ public class UserManager {
     private Logger logger = LoggerFactory.getLogger(UserManager.class);
 
     public boolean createUser(String userId, String name){
-        logger.debug(String.format("创建用户,userId: %s, name: %s", userId, name));
+        logger.debug(String.format("创建用户目录,userId: %s, name: %s", userId, name));
         // 用户路径
         String path = root + "/" + userId + name;
         File file = new File(path);
@@ -44,7 +44,7 @@ public class UserManager {
         }
         if (!flag) return false;
         UserVO user = new UserVO(userId, name, path);
-        logger.info("成功创建用户,用户信息为: " + user);
+        logger.info("成功创建用户目录,用户信息为: " + user);
         return true;
     }
 

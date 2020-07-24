@@ -59,9 +59,10 @@ public class Operator {
 
         // 目标笔记本的信息,笔记本id是自动生成的
         String tarNbId = tarUserId + Long.toHexString(System.currentTimeMillis());
-        String tarPath = tarUser.getPath() + "/"+ src.getPath();
+        String path = "/" + src.getPath() + "/" + src.getName();
+        String tarPath = tarUser.getPath() + path;
         // 源笔记本的路径
-        String srcPath = srcUser.getPath() + "/" + src.getPath() + "/" + src.getName();
+        String srcPath = srcUser.getPath() + path;
 
         // 复制
         try {
@@ -69,7 +70,7 @@ public class Operator {
             Files.copy(Paths.get(srcPath), Paths.get(tarPath));
             Runtime.getRuntime().exec("chmod 777 " + tarPath);
             // 更新数据库
-            Notebook tar = new Notebook(tarNbId, src.getName(), tarUserId, src.getNbID(), tarPath);
+            Notebook tar = new Notebook(tarNbId, src.getName(), tarUserId, src.getNbID(), src.getPath());
             nbDao.insert(tar);
             logger.debug(String.format("更新NoteBook数据库,插入: %s", tar.toString()));
         } catch (IOException e) {
@@ -92,6 +93,10 @@ public class Operator {
         logger.debug("copyNbToUser(Notebook src, String tarUserId)");
         return copyNbToUser(src, tarUserId);
     }
+
+//    public boolean copyNbToUser(String courseId, String stepId, String strNum){
+//
+//    }
 
 
     // 将一个笔记本拷贝到目标目录下
@@ -138,7 +143,7 @@ public class Operator {
             nbDao.updateByPrimaryKey(notebook);
         }
 
-        String path = user.getPath() + "/" + src.getPath() + "/" + src.getName();
+        String path = user.getPath() + src.getPath() + "/" + src.getName();
         try {
             logger.debug(String.format("删除文件,path: %s", path));
             Files.delete(Paths.get(path));
@@ -164,9 +169,9 @@ public class Operator {
         srcNb = nbDao.selectByPrimaryKey(tarNb.getSrcID());
 
         String srcPath = userDao.selectByPrimaryKey(srcNb.getUserID()).getPath()
-                + "/" + srcNb.getPath() + "/" + srcNb.getName();
+                + srcNb.getPath() + "/" + srcNb.getName();
         String tarPath = userDao.selectByPrimaryKey(tarNb.getUserID()).getPath()
-                + "/" + tarNb.getPath() + "/" + tarNb.getName();
+                + tarNb.getPath() + "/" + tarNb.getName();
         logger.info(String.format("笔记本路径,srcPath: %s,tarPath: %s", srcPath, tarPath));
         File src = new File(srcPath);
         File tar = new File(tarPath);
