@@ -13,21 +13,13 @@ import org.springframework.stereotype.Repository;
 public interface StepsMapper {
     int deleteByExample(StepsExample example);
 
-    int deleteByPrimaryKey(String courseID);
-
     int insert(Steps record);
 
     int insertSelective(Steps record);
 
     List<Steps> selectByExample(StepsExample example);
 
-    Steps selectByPrimaryKey(String courseID);
-
     int updateByExampleSelective(@Param("record") Steps record, @Param("example") StepsExample example);
 
     int updateByExample(@Param("record") Steps record, @Param("example") StepsExample example);
-
-    int updateByPrimaryKeySelective(Steps record);
-
-    int updateByPrimaryKey(Steps record);
 }

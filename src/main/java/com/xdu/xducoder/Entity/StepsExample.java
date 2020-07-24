@@ -104,76 +104,6 @@ public class StepsExample {
             criteria.add(new Criterion(condition, value1, value2));
         }
 
-        public Criteria andCourseIDIsNull() {
-            addCriterion("CourseID is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDIsNotNull() {
-            addCriterion("CourseID is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDEqualTo(String value) {
-            addCriterion("CourseID =", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDNotEqualTo(String value) {
-            addCriterion("CourseID <>", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDGreaterThan(String value) {
-            addCriterion("CourseID >", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDGreaterThanOrEqualTo(String value) {
-            addCriterion("CourseID >=", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDLessThan(String value) {
-            addCriterion("CourseID <", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDLessThanOrEqualTo(String value) {
-            addCriterion("CourseID <=", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDLike(String value) {
-            addCriterion("CourseID like", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDNotLike(String value) {
-            addCriterion("CourseID not like", value, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDIn(List<String> values) {
-            addCriterion("CourseID in", values, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDNotIn(List<String> values) {
-            addCriterion("CourseID not in", values, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDBetween(String value1, String value2) {
-            addCriterion("CourseID between", value1, value2, "courseID");
-            return (Criteria) this;
-        }
-
-        public Criteria andCourseIDNotBetween(String value1, String value2) {
-            addCriterion("CourseID not between", value1, value2, "courseID");
-            return (Criteria) this;
-        }
-
         public Criteria andStepNameIsNull() {
             addCriterion("stepName is null");
             return (Criteria) this;
@@ -384,6 +314,76 @@ public class StepsExample {
             return (Criteria) this;
         }
 
+        public Criteria andCourseIDIsNull() {
+            addCriterion("CourseID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDIsNotNull() {
+            addCriterion("CourseID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDEqualTo(String value) {
+            addCriterion("CourseID =", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDNotEqualTo(String value) {
+            addCriterion("CourseID <>", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDGreaterThan(String value) {
+            addCriterion("CourseID >", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDGreaterThanOrEqualTo(String value) {
+            addCriterion("CourseID >=", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDLessThan(String value) {
+            addCriterion("CourseID <", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDLessThanOrEqualTo(String value) {
+            addCriterion("CourseID <=", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDLike(String value) {
+            addCriterion("CourseID like", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDNotLike(String value) {
+            addCriterion("CourseID not like", value, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDIn(List<String> values) {
+            addCriterion("CourseID in", values, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDNotIn(List<String> values) {
+            addCriterion("CourseID not in", values, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDBetween(String value1, String value2) {
+            addCriterion("CourseID between", value1, value2, "courseID");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseIDNotBetween(String value1, String value2) {
+            addCriterion("CourseID not between", value1, value2, "courseID");
+            return (Criteria) this;
+        }
+
         public Criteria andStepIDIsNull() {
             addCriterion("stepID is null");
             return (Criteria) this;
@@ -441,6 +441,76 @@ public class StepsExample {
 
         public Criteria andStepIDNotBetween(Integer value1, Integer value2) {
             addCriterion("stepID not between", value1, value2, "stepID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDIsNull() {
+            addCriterion("nbID is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDIsNotNull() {
+            addCriterion("nbID is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDEqualTo(String value) {
+            addCriterion("nbID =", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDNotEqualTo(String value) {
+            addCriterion("nbID <>", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDGreaterThan(String value) {
+            addCriterion("nbID >", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDGreaterThanOrEqualTo(String value) {
+            addCriterion("nbID >=", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDLessThan(String value) {
+            addCriterion("nbID <", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDLessThanOrEqualTo(String value) {
+            addCriterion("nbID <=", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDLike(String value) {
+            addCriterion("nbID like", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDNotLike(String value) {
+            addCriterion("nbID not like", value, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDIn(List<String> values) {
+            addCriterion("nbID in", values, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDNotIn(List<String> values) {
+            addCriterion("nbID not in", values, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDBetween(String value1, String value2) {
+            addCriterion("nbID between", value1, value2, "nbID");
+            return (Criteria) this;
+        }
+
+        public Criteria andNbIDNotBetween(String value1, String value2) {
+            addCriterion("nbID not between", value1, value2, "nbID");
             return (Criteria) this;
         }
     }
