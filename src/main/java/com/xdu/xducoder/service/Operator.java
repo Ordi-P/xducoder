@@ -94,7 +94,7 @@ public class Operator {
         return copyNbToUser(src, tarUserId);
     }
 
-    public boolean copyNbToUser(String courseId, int stepId, String stuId){
+    public boolean copyNbToUser(String courseId, int stepId, String userId){
         StepsExample example = new StepsExample();
         example.createCriteria().andCourseIDEqualTo(courseId).andStepIDEqualTo(stepId);
         List<Steps> steps = stepDao.selectByExample(example);
@@ -105,7 +105,7 @@ public class Operator {
         Steps step = steps.get(0);
         String nbId = step.getNbID();
 
-        return copyNbToUser(nbId, stuId);
+        return copyNbToUser(nbId, userId);
     }
 
 
