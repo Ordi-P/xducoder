@@ -94,10 +94,18 @@ public class Operator {
         return copyNbToUser(src, tarUserId);
     }
 
-    public boolean copyNbToUser(String courseId, int stepId, String strNum){
+    public boolean copyNbToUser(String courseId, int stepId, String stuId){
         StepsExample example = new StepsExample();
         example.createCriteria().andCourseIDEqualTo(courseId).andStepIDEqualTo(stepId);
+        List<Steps> steps = stepDao.selectByExample(example);
+        if (steps == null || steps.size() == 0) {
+            logger.error(String.format("未找到相应课程步骤!courseId=%s, stepId=%s", courseId, stepId));
+            return false;
+        }
+        Steps step = steps.get(0);
+        String nbId = step.getNbID();
 
+        return copyNbToUser(nbId, stuId);
     }
 
 
