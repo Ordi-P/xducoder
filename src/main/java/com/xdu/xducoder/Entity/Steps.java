@@ -3,25 +3,19 @@ package com.xdu.xducoder.Entity;
 import java.io.Serializable;
 
 public class Steps implements Serializable {
-    private String courseID;
-
     private String stepName;
 
     private String stepDescription;
 
     private String stepUrl;
 
+    private String courseID;
+
     private Integer stepID;
 
+    private String nbID;
+
     private static final long serialVersionUID = 1L;
-
-    public String getCourseID() {
-        return courseID;
-    }
-
-    public void setCourseID(String courseID) {
-        this.courseID = courseID == null ? null : courseID.trim();
-    }
 
     public String getStepName() {
         return stepName;
@@ -47,6 +41,14 @@ public class Steps implements Serializable {
         this.stepUrl = stepUrl == null ? null : stepUrl.trim();
     }
 
+    public String getCourseID() {
+        return courseID;
+    }
+
+    public void setCourseID(String courseID) {
+        this.courseID = courseID == null ? null : courseID.trim();
+    }
+
     public Integer getStepID() {
         return stepID;
     }
@@ -55,17 +57,26 @@ public class Steps implements Serializable {
         this.stepID = stepID;
     }
 
+    public String getNbID() {
+        return nbID;
+    }
+
+    public void setNbID(String nbID) {
+        this.nbID = nbID == null ? null : nbID.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", courseID=").append(courseID);
         sb.append(", stepName=").append(stepName);
         sb.append(", stepDescription=").append(stepDescription);
         sb.append(", stepUrl=").append(stepUrl);
+        sb.append(", courseID=").append(courseID);
         sb.append(", stepID=").append(stepID);
+        sb.append(", nbID=").append(nbID);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
