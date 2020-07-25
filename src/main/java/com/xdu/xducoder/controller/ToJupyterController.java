@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ import com.alibaba.fastjson.JSON;
 
 import org.springframework.web.bind.annotation.*;
 @RestController
-@CrossOrigin(allowCredentials="true",origins = "*",maxAge = 3600)
+@CrossOrigin(origins = "*",maxAge = 3600)
 public class ToJupyterController {
     @Autowired
     private CourseMapper courseMapper;
@@ -42,7 +43,7 @@ public class ToJupyterController {
         this.stepMapper = stepMapper;
     }
 
-    @RequestMapping(value = "/api/courses", method = RequestMethod.GET)
+    @GetMapping("/api/courses")
     public String list() {
         System.out.println("These are courses!");
         SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName", "CourseID", "CourseDescription", "coverUrl");
@@ -90,24 +91,31 @@ public class ToJupyterController {
     //react给studentid courseid stepid，返回给前端文件名（courseid，stepid）
 //jupyter调用后端,后端就要判断，并且调用接口，返回什么东西文件名和路径
     //模板文件，目录，
-    @RequestMapping(value = "/yanzheng", method = RequestMethod.POST)
-    @ResponseBody
+    @PostMapping("/yanzheng")
     public Object test2(@RequestBody Map<String, Object> para) throws JsonProcessingException, IOException {
         HashMap<String, Object> hs = new HashMap<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        String STDNum = (String) para.get("STDNum");
-        String courseId = (String) para.get("courseId");
-        Integer stepId = (Integer) para.get("stepId");
+        String STDNum = para.get("STDNum").toString();
+        String courseId = para.get("courseId").toString();
+        Integer stepId = Integer.parseInt(para.get("stepId").toString());
         //复杂查询对应的
         ChoosecourseExample choosecourseExample = new ChoosecourseExample();
         choosecourseExample.createCriteria().andSTDNumEqualTo(STDNum).andCourseIDEqualTo(courseId).andStepIDEqualTo(stepId);
-        List list = choosecourseMapper.selectByExample(choosecourseExample);
-        if (list.size()==0) {
+        List list = null;
+        try{
+            list = choosecourseMapper.selectByExample(choosecourseExample);
+        } catch (Exception e){
+            System.out.println("没有这一项");
+        }
+
+        System.out.println("**************"+list.size());
+
+        if (list != null && list.size() == 0) {
 //            类名.方法()，初始化列表
-            Choosecourse choosecourse2 = new Choosecourse(STDNum, courseId, 0, new Date(), null, null);
+            Choosecourse choosecourse2 = new Choosecourse(STDNum, courseId, stepId, new Date(), null, null);
             choosecourseMapper.insert(choosecourse2);
-           Userinfo userinfo= userinfoMapper.selectByPrimaryKey(STDNum);
+            Userinfo userinfo= userinfoMapper.selectByPrimaryKey(STDNum);
             Operator operator = new Operator();
             operator.copyNbToUser(courseId,stepId,userinfo.getUserID());
         }
@@ -115,7 +123,5 @@ public class ToJupyterController {
         hs.put("stepId", stepId);
 
         return objectMapper.writeValueAsString(hs);
-
     }
-
 }
