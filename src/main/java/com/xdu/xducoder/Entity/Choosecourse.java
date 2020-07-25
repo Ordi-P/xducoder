@@ -19,7 +19,9 @@ public class Choosecourse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
+    public Choosecourse() {
+        super();
+    }
 
     public String getSTDNum() {
         return STDNum;
