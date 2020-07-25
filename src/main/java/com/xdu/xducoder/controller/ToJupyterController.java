@@ -106,7 +106,7 @@ public class ToJupyterController {
         try{
             list = choosecourseMapper.selectByExample(choosecourseExample);
         } catch (Exception e){
-            System.out.println("没有这一项");
+            e.printStackTrace();
         }
 
         System.out.println("**************"+list.size());
