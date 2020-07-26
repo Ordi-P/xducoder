@@ -30,18 +30,16 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*",maxAge = 3600)
 public class ToJupyterController {
     @Autowired
-    private CourseMapper courseMapper;
+    CourseMapper courseMapper;
     @Autowired
-    private StepsMapper stepMapper;
+    StepsMapper stepMapper;
     @Autowired
-    private ChoosecourseMapper choosecourseMapper;
+    ChoosecourseMapper choosecourseMapper;
     @Autowired
-    private UserinfoMapper userinfoMapper;
+    UserinfoMapper userinfoMapper;
+
     @Autowired
-    public ToJupyterController(CourseMapper courseMapper, StepsMapper stepMapper) {
-        this.courseMapper = courseMapper;
-        this.stepMapper = stepMapper;
-    }
+    Operator operator;
 
     @GetMapping("/api/courses")
     public String list() {
@@ -109,14 +107,11 @@ public class ToJupyterController {
             e.printStackTrace();
         }
 
-        System.out.println("**************"+list.size());
-
         if (list != null && list.size() == 0) {
 //            类名.方法()，初始化列表
             Choosecourse choosecourse2 = new Choosecourse(STDNum, courseId, stepId, new Date(), null, null);
             choosecourseMapper.insert(choosecourse2);
             Userinfo userinfo= userinfoMapper.selectByPrimaryKey(STDNum);
-            Operator operator = new Operator();
             operator.copyNbToUser(courseId,stepId,userinfo.getUserID());
         }
         hs.put("courseId", courseId);

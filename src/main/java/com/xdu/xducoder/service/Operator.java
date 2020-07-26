@@ -19,11 +19,11 @@ import java.util.List;
 public class Operator {
 
     @Autowired
-    public NotebookMapper nbDao;
+    NotebookMapper nbDao;
     @Autowired
-    public UserinfoMapper userDao;
+    UserinfoMapper userDao;
     @Autowired
-    public StepsMapper stepDao;
+    StepsMapper stepDao;
 
     private final Logger logger = LoggerFactory.getLogger(Operator.class);
 
@@ -97,7 +97,8 @@ public class Operator {
     public boolean copyNbToUser(String courseId, int stepId, String userId){
         StepsExample example = new StepsExample();
         example.createCriteria().andCourseIDEqualTo(courseId).andStepIDEqualTo(stepId);
-        List<Steps> steps = stepDao.selectByExample(example);
+        List<Steps> steps;
+        steps = stepDao.selectByExample(example);
         if (steps == null || steps.size() == 0) {
             logger.error(String.format("未找到相应课程步骤!courseId=%s, stepId=%s", courseId, stepId));
             return false;
