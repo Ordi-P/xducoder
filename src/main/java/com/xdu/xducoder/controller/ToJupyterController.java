@@ -26,6 +26,11 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 
 import org.springframework.web.bind.annotation.*;
+/*
+ *两个接口，
+ *第一个是选择课程之后，前端调用后端
+ *第二个是选择关卡之后，调用后端
+ */
 @RestController
 @CrossOrigin(origins = "*",maxAge = 3600)
 public class ToJupyterController {
@@ -41,12 +46,12 @@ public class ToJupyterController {
     @Autowired
     Operator operator;
 
-    @GetMapping("/api/courses")
-    public String list() {
-        System.out.println("These are courses!");
-        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName", "CourseID", "CourseDescription", "coverUrl");
-        return JSON.toJSONString(courseMapper.list(), filter1);
-    }
+//    @GetMapping("/api/courses")
+//    public String list() {
+//        System.out.println("These are courses!");
+//        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName", "CourseID", "CourseDescription", "coverUrl");
+//        return JSON.toJSONString(courseMapper.list(), filter1);
+//    }
 
     @RequestMapping(value="/api/challenge",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
     public String Challenge(@RequestBody Challenge challenge)
