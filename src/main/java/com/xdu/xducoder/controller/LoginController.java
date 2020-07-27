@@ -4,7 +4,6 @@ package com.xdu.xducoder.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xdu.xducoder.Dao.UserinfoMapper;
-import com.xdu.xducoder.Entity.ChoosecourseExample;
 import com.xdu.xducoder.Entity.Userinfo;
 
 import com.xdu.xducoder.Entity.UserinfoExample;
@@ -65,27 +64,29 @@ public class LoginController {
 
         }else{
             //accessToken是空的，第一次登录
-            String account = (String)para.get("account");
+//            String account = (String)para.get("account");
             String password = (String)para.get("password");
+            String STDNum = (String)para.get("account");//ACCOUNT是学号
 
-            UserinfoExample userinfoExample = new UserinfoExample();
-            userinfoExample.createCriteria().andUserNameEqualTo(account);
-            List<Userinfo> list = null;
-            try{
-                list = userinfoMapper.selectByExample(userinfoExample);
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-            //考虑到可能会有重名的情况
-            boolean flag=false;
-            Userinfo userinfo=null;
-            for(int i=0;i<list.size();i++){
-                if(list.get(i).getPassword().equals(password)){
-                    flag=true;
-                    userinfo = list.get(i);
-                }
-            }
-            if(flag&&userinfo!=null){
+//            UserinfoExample userinfoExample = new UserinfoExample();
+//            userinfoExample.createCriteria().andUserNameEqualTo(account);
+//            List<Userinfo> list = null;
+//            try{
+//                list = userinfoMapper.selectByExample(userinfoExample);
+//            } catch (Exception e){
+//                e.printStackTrace();
+//            }
+//            //考虑到可能会有重名的情况
+//            boolean flag=false;
+//            Userinfo userinfo=null;
+//            for(int i=0;i<list.size();i++){
+//                if(list.get(i).getPassword().equals(password)){
+//                    flag=true;
+//                    userinfo = list.get(i);
+//                }
+//            }
+            Userinfo userinfo =userinfoMapper.selectByPrimaryKey(STDNum);
+            if(userinfo != null && userinfo.getPassword().equals(password)){
                 String token = UUID.randomUUID().toString().replace("-", "") +"STDNum:"+userinfo.getSTDNum();
                 System.out.println("Login Successfully--------第一次");
                 hs.put("account", userinfo.getUserName());
