@@ -26,6 +26,11 @@ import java.util.Map;
 import com.alibaba.fastjson.JSON;
 
 import org.springframework.web.bind.annotation.*;
+/*
+ *两个接口，
+ *第一个是选择课程之后，前端调用后端
+ *第二个是选择关卡之后，调用后端
+ */
 @RestController
 @CrossOrigin(origins = "*",maxAge = 3600)
 public class ToJupyterController {
