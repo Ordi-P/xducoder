@@ -53,51 +53,50 @@ public class ToJupyterController {
 //        return JSON.toJSONString(courseMapper.list(), filter1);
 //    }
 
-    @RequestMapping(value="/api/challenge",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
-    public String Challenge(@RequestBody Challenge challenge)
-    {
-        //获得学号和课程号
-        String STUNum=challenge.getSTUNum();
-        String CourseID=challenge.getCourseID();
-        JSONObject choosecourseInfo=new JSONObject();
-        choosecourseInfo.put("msg","success");
-        String response=JSONObject.toJSONString(choosecourseInfo);
-        //复杂查询
-        ChoosecourseExample choosecourseExample = new ChoosecourseExample();
-        choosecourseExample.createCriteria().andSTDNumEqualTo(STUNum).andCourseIDEqualTo(CourseID);
-        List list = choosecourseMapper.selectByExample(choosecourseExample);
-
-        if(list.size()!=0)
-        {
-            return response;
-        }
-        else{
-            java.sql.Date regdate=new java.sql.Date(System.currentTimeMillis());
-            Course course=courseMapper.selectByPrimaryKey(CourseID);        //也改了
-            int CourseNum=course.getCourseNum();
-            CourseNum++;
-            byte[] score={0};
-            course.setCourseNum(CourseNum);
-            courseMapper.updateByPrimaryKey(course);//这里改了使用潘思言的众多函数中的一个
-            Choosecourse newstart=new Choosecourse();
-            newstart.setCourseID(CourseID);
-            newstart.setCourseScore(score);
-            newstart.setSTDNum(STUNum);
-            newstart.setRegDate(regdate);
-            newstart.setCompleteDate(regdate);
-            newstart.setStepID(0);
-            choosecourseMapper.insert(newstart);//插入一个
-            return response;
-        }
-    }
+//    @RequestMapping(value="/api/challenge",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
+//    public String Challenge(@RequestBody Challenge challenge)
+//    {
+//        //获得学号和课程号
+//        String STUNum=challenge.getSTUNum();
+//        String CourseID=challenge.getCourseID();
+//        JSONObject choosecourseInfo=new JSONObject();
+//        choosecourseInfo.put("msg","success");
+//        String response=JSONObject.toJSONString(choosecourseInfo);
+//        //复杂查询
+//        ChoosecourseExample choosecourseExample = new ChoosecourseExample();
+//        choosecourseExample.createCriteria().andSTDNumEqualTo(STUNum).andCourseIDEqualTo(CourseID);
+//        List list = choosecourseMapper.selectByExample(choosecourseExample);
+//
+//        if(list.size()!=0)
+//        {
+//            return response;
+//        }
+//        else{
+//            java.sql.Date regdate=new java.sql.Date(System.currentTimeMillis());
+//            Course course=courseMapper.selectByPrimaryKey(CourseID);        //也改了
+//            int CourseNum=course.getCourseNum();
+//            CourseNum++;
+//            byte[] score={0};
+//            course.setCourseNum(CourseNum);
+//            courseMapper.updateByPrimaryKey(course);//这里改了使用潘思言的众多函数中的一个
+//            Choosecourse newstart=new Choosecourse();
+//            newstart.setCourseID(CourseID);
+//            newstart.setCourseScore(score);
+//            newstart.setSTDNum(STUNum);
+//            newstart.setRegDate(regdate);
+//            newstart.setCompleteDate(regdate);
+//            newstart.setStepID(0);
+//            choosecourseMapper.insert(newstart);//插入一个
+//            return response;
+//        }
+//    }
 
     //react给studentid courseid stepid，返回给前端文件名（courseid，stepid）
     //jupyter调用后端,后端就要判断，并且调用接口，返回什么东西文件名和路径
     //模板文件，目录，
     @PostMapping("/yanzheng")
-    public Object test2(@RequestBody Map<String, Object> para) throws JsonProcessingException, IOException {
+    public Map test2(@RequestBody Map<String, Object> para) throws JsonProcessingException, IOException {
         HashMap<String, Object> hs = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
 
         String STDNum = para.get("STDNum").toString();
         String courseId = para.get("courseId").toString();
@@ -122,6 +121,6 @@ public class ToJupyterController {
         hs.put("courseId", courseId);
         hs.put("stepId", stepId);
 
-        return objectMapper.writeValueAsString(hs);
+        return hs;
     }
 }

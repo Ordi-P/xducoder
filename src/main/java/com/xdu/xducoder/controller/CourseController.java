@@ -16,20 +16,6 @@ import java.util.List;
 @RestController
 @CrossOrigin
 public class CourseController {
-//    //张嘉蔚的courses接口
-//    private CourseMapper courseMapper;
-//    @Autowired
-//    public CourseController(CourseMapper courseMapper){
-//        this.courseMapper=courseMapper;
-//    }
-//
-//    @RequestMapping(value = "/api/courses",method = RequestMethod.GET)
-//    public String list()
-//    {
-//        System.out.println("These are courses!");
-//        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName","CourseID","CourseDescription","coverUrl");
-//        return JSON.toJSONString(courseMapper.list(),filter1) ;
-//    }
 
     private CourseMapper courseMapper;
     private StepsMapper stepsMapper;
@@ -41,38 +27,37 @@ public class CourseController {
     }
 //    @RequestMapping(value = "/api/courses",method = RequestMethod.GET)
     @GetMapping(value = "/api/courses")
-    public String list()
-    {   SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName","CourseID","CourseDescription","coverUrl");
-        return JSON.toJSONString(courseMapper.list(),filter1) ;
+    public List list()
+    {
+//        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName","CourseID","CourseDescription","coverUrl");
+//        return JSON.toJSONString(courseMapper.list(),filter1) ;
+        return courseMapper.list();
     }
 
 //    @RequestMapping(value="/api/course",method = RequestMethod.GET)
     @GetMapping(value="/api/course")
-    public String findByPrimaryKey(@RequestParam(value="id",required=true) String courseID)
+    public List findByPrimaryKey(@RequestParam(value="id",required=true) String courseID)
     {
-        try{
-            StepsExample stepsExample=new StepsExample();
-            stepsExample.createCriteria().andCourseIDEqualTo(courseID);
-            List<Steps> steps= stepsMapper.selectByExample(stepsExample);
-//            System.out.println("我在这里");
-            SimplePropertyPreFilter filter2 = new SimplePropertyPreFilter("CourseID","CourseName","CourseNum","CompleteNum","CourseDIF","CourseDescription","chapters","stepID");
-            filter2.getExcludes().add("CoverURL");
-            JSONObject courseInfo=(JSONObject)JSONObject.toJSON(courseMapper.selectByPrimaryKey(courseID));
-            String response=JSONObject.toJSONString(courseInfo,filter2);
-            JSONObject raw= JSON.parseObject(response);
-            raw.put("stepID",0);
-            raw.put("chapters",steps);
-            response=JSONObject.toJSONString(raw);
-            return response;
-        } catch (Exception e){
-            return "发生错误，可能是courseID错误导致";
-        }
+        StepsExample stepsExample=new StepsExample();
+        stepsExample.createCriteria().andCourseIDEqualTo(courseID);
+        List<Steps> steps= stepsMapper.selectByExample(stepsExample);
+//        System.out.println("我在这里");
+//        SimplePropertyPreFilter filter2 = new SimplePropertyPreFilter("CourseID","CourseName","CourseNum","CompleteNum","CourseDIF","CourseDescription","chapters","stepID");
+//        filter2.getExcludes().add("CoverURL");
+//        JSONObject courseInfo=(JSONObject)JSONObject.toJSON(courseMapper.selectByPrimaryKey(courseID));
+//        String response=JSONObject.toJSONString(courseInfo,filter2);
+//        JSONObject raw= JSON.parseObject(response);
+//        raw.put("stepID",0);
+//        raw.put("chapters",steps);
+//        response=JSONObject.toJSONString(raw);
+//        return response;
+        return steps;
     }
 
 //    @RequestMapping(value ="/api/search",method = RequestMethod.GET)
     @GetMapping(value ="/api/search")
-    public String searchCourse(@RequestParam(value = "q",required = true)String KeyWord)
+    public Course searchCourse(@RequestParam(value = "q",required = true)String KeyWord)
     {
-        return JSON.toJSONString(courseMapper.selectByPrimaryKey(KeyWord));
+        return courseMapper.selectByPrimaryKey(KeyWord);
     }
 }
