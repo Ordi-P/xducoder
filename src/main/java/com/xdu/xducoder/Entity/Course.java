@@ -1,18 +1,20 @@
 package com.xdu.xducoder.Entity;
+import com.alibaba.fastjson.annotation.JSONField;
 
 import java.io.Serializable;
 
 public class Course implements Serializable {
+    @JSONField(name="CourseID")
     private String courseID;
-
+    @JSONField(name="CourseName")
     private String courseName;
-
+    @JSONField(name="CourseDIF")
     private String courseDIF;
-
+    @JSONField(name="CourseNum")
     private Integer courseNum;
-
+    @JSONField(name="completeNum")
     private Integer completeNum;
-
+    @JSONField(name="CourseDescription")
     private String courseDescription;
 
     private String coverUrl;

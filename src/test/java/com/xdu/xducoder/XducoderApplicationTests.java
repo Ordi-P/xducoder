@@ -1,18 +1,12 @@
 package com.xdu.xducoder;
 
-import com.xdu.xducoder.Dao.*;
-import com.xdu.xducoder.Entity.Challenge;
-import com.xdu.xducoder.Entity.Notebook;
-import com.xdu.xducoder.controller.JupyterLoginController;
 import com.xdu.xducoder.controller.ToJupyterController;
 import com.xdu.xducoder.controller.notebookController;
 import com.xdu.xducoder.service.Operator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 @SpringBootTest
@@ -43,5 +37,23 @@ class XducoderApplicationTests {
     @Test
     public void test2(){
         System.out.println(operator.copyNbToUser("1", 0, "19030500113"));
+    }
+
+    public static class UserTest {
+
+        @Test
+        private void testCreateUser(){
+            HashMap<String, String> map = new HashMap<>();
+            map.put("UserId", "190305");
+            map.put("name", "陈德创");
+            System.out.println("测试中!!!");
+            boolean flag = new notebookController().createUserDirectory(map);
+            assert flag;
+        }
+
+        public static void main(String[] args) {
+            new UserTest().testCreateUser();
+        }
+
     }
 }
