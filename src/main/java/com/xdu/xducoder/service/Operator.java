@@ -109,7 +109,6 @@ public class Operator {
         return copyNbToUser(nbId, userId);
     }
 
-
     // 将一个笔记本拷贝到目标目录下
     public boolean copyNbToUser(String UserID, String path, String name, String tarUserId){
         logger.debug(String.format("copyNbToUser(UserID: %s, path: %s, name: %s, tarUserId: %s)",
