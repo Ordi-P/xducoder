@@ -25,11 +25,12 @@ public class LoginController {
 
     @RequestMapping(value = "/api/login", method = RequestMethod.POST)
     @ResponseBody
-    public Object Login(@RequestHeader Map<String, Object> he, @RequestBody Map<String, Object> para,HttpServletRequest request,HttpServletResponse response
-    ) throws JsonProcessingException,IOException {
+    public Map Login(@RequestHeader Map<String, Object> he, @RequestBody Map<String, Object> para,HttpServletRequest request,HttpServletResponse response
+    ) throws IOException {
+        System.out.println(new Date() + ":接口/api/login调用一次");
+
         request.setCharacterEncoding("utf-8");
         HashMap<String, Object> hs = new HashMap<>();
-        ObjectMapper objectMapper = new ObjectMapper();
 
         String accessToken = (String) para.get("accessToken");
         System.out.println("accessToken------------"+accessToken);
@@ -103,7 +104,7 @@ public class LoginController {
             }
         }
 
-        return objectMapper.writeValueAsString(hs);
+        return hs;
     }
 
 }

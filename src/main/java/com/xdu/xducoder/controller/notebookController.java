@@ -9,6 +9,7 @@ import com.xdu.xducoder.service.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,6 +27,8 @@ public class notebookController {
 
     @PostMapping("/copyNbToUserBySrc")
     public boolean copyNbToUserByNbId(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/copyNbToUserBySrc调用一次");
+
         return notebook.copyNbToUser(
                 map.get("nbID").toString(),
                 map.get("tarUserID").toString()
@@ -34,6 +37,8 @@ public class notebookController {
 
     @PostMapping("/copyNbToUserByM")
     public boolean copyNbToUserByM(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/copyNbToUserByM调用一次");
+
         return notebook.copyNbToUser(
                 map.get("UserID").toString(),
                 map.get("path").toString(),
@@ -44,6 +49,8 @@ public class notebookController {
 
     @PostMapping("/deleteNbBynbID")
     public boolean deleteNb(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/deleteNbBynbID调用一次");
+
         return notebook.deleteNb(
                 map.get("nbId").toString()
         );
@@ -51,6 +58,8 @@ public class notebookController {
 
     @PostMapping("/selectNbIDByUserID")
     public List<Notebook> selectNbIDByUserID(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/selectNbIDByUserID调用一次");
+
         NotebookExample example = new NotebookExample();
         example.createCriteria().andUserIDEqualTo(map.get("UserID").toString());
         return notebookMapper.selectByExample(example);
@@ -58,11 +67,15 @@ public class notebookController {
 
     @PostMapping("/createUserDirectory")
     public boolean createUserDirectory(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/createUserDirectory调用一次");
+
         return userManager.createUser(map.get("UserId").toString(),map.get("name").toString());
     }
 
     @PostMapping("/deleteUserDirectory")
     public boolean deleteUserDirectory(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/deleteUserDirectory调用一次");
+
         try {
             return userManager.deleteUser(map.get("UserID").toString());
         } catch (UserNotFoundException e) {
@@ -73,6 +86,8 @@ public class notebookController {
 
     @PostMapping("/resetNoteBookByNbID")
     public boolean resetNoteBookByNbID(@RequestBody HashMap map){
+        System.out.println(new Date() + ":接口/resetNoteBookByNbID调用一次");
+
         return notebook.resetNb(map.get("nbId").toString());
     }
 }

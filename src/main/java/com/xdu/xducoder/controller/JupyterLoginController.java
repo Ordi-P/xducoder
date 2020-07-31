@@ -25,11 +25,15 @@ public class JupyterLoginController {
 
     @GetMapping("/isWorking")
     public boolean isWorking(){
+        System.out.println(new Date() + ":接口/isWorking调用一次");
+
         return true;
     }
 
     @PostMapping("/getSTDNum")
     public String getSTDNum(@RequestBody HashMap resMap){
+        System.out.println(new Date() + ":接口/getSTDNum调用一次");
+
         UserinfoExample example = new UserinfoExample();
         example.createCriteria().andUserIDEqualTo(resMap.get("userID").toString());
         List<Userinfo> userinfoList = userinfoMapper.selectByExample(example);
@@ -42,6 +46,8 @@ public class JupyterLoginController {
 
     @PostMapping("/saveScore")
     public boolean saveScore(@RequestBody Choosecourse choosecourse){
+        System.out.println(new Date() + ":接口调/saveScore用一次");
+
         Choosecourse selectOrigin = choosecourseMapper.selectByPrimaryKey(
                 choosecourse.getSTDNum(),
                 choosecourse.getCourseID(),

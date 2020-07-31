@@ -23,7 +23,8 @@ public class ChooseCourseController {
     @PostMapping(value="/api/challenge")
     public String Challenge(@RequestBody Challenge challenge)
     {
-        System.out.println("是我了");
+        System.out.println(new Date() + ":接口/api/challenge调用一次");
+
         String STUNum=challenge.getSTUNum();
         String CourseID=challenge.getCourseID();
 //        JSONObject choosecourseInfo=new JSONObject();

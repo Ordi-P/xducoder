@@ -11,6 +11,7 @@ import com.xdu.xducoder.Entity.StepsExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,8 @@ public class CourseController {
     @GetMapping(value = "/api/courses")
     public List list()
     {
+        System.out.println(new Date() + ":接口/api/courses调用一次");
+
 //        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName","CourseID","CourseDescription","coverUrl");
 //        return JSON.toJSONString(courseMapper.list(),filter1) ;
         return courseMapper.list();
@@ -38,6 +41,8 @@ public class CourseController {
     @GetMapping(value="/api/course")
     public List findByPrimaryKey(@RequestParam(value="id",required=true) String courseID)
     {
+        System.out.println(new Date() + ":接口/api/course调用一次");
+
         StepsExample stepsExample=new StepsExample();
         stepsExample.createCriteria().andCourseIDEqualTo(courseID);
         List<Steps> steps= stepsMapper.selectByExample(stepsExample);
@@ -58,6 +63,8 @@ public class CourseController {
     @GetMapping(value ="/api/search")
     public Course searchCourse(@RequestParam(value = "q",required = true)String KeyWord)
     {
+        System.out.println(new Date() + ":接口/api/search调用一次");
+
         return courseMapper.selectByPrimaryKey(KeyWord);
     }
 }
