@@ -42,54 +42,8 @@ public class ToJupyterController {
     ChoosecourseMapper choosecourseMapper;
     @Autowired
     UserinfoMapper userinfoMapper;
-
     @Autowired
     Operator operator;
-
-//    @GetMapping("/api/courses")
-//    public String list() {
-//        System.out.println("These are courses!");
-//        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName", "CourseID", "CourseDescription", "coverUrl");
-//        return JSON.toJSONString(courseMapper.list(), filter1);
-//    }
-
-//    @RequestMapping(value="/api/challenge",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
-//    public String Challenge(@RequestBody Challenge challenge)
-//    {
-//        //获得学号和课程号
-//        String STUNum=challenge.getSTUNum();
-//        String CourseID=challenge.getCourseID();
-//        JSONObject choosecourseInfo=new JSONObject();
-//        choosecourseInfo.put("msg","success");
-//        String response=JSONObject.toJSONString(choosecourseInfo);
-//        //复杂查询
-//        ChoosecourseExample choosecourseExample = new ChoosecourseExample();
-//        choosecourseExample.createCriteria().andSTDNumEqualTo(STUNum).andCourseIDEqualTo(CourseID);
-//        List list = choosecourseMapper.selectByExample(choosecourseExample);
-//
-//        if(list.size()!=0)
-//        {
-//            return response;
-//        }
-//        else{
-//            java.sql.Date regdate=new java.sql.Date(System.currentTimeMillis());
-//            Course course=courseMapper.selectByPrimaryKey(CourseID);        //也改了
-//            int CourseNum=course.getCourseNum();
-//            CourseNum++;
-//            byte[] score={0};
-//            course.setCourseNum(CourseNum);
-//            courseMapper.updateByPrimaryKey(course);//这里改了使用潘思言的众多函数中的一个
-//            Choosecourse newstart=new Choosecourse();
-//            newstart.setCourseID(CourseID);
-//            newstart.setCourseScore(score);
-//            newstart.setSTDNum(STUNum);
-//            newstart.setRegDate(regdate);
-//            newstart.setCompleteDate(regdate);
-//            newstart.setStepID(0);
-//            choosecourseMapper.insert(newstart);//插入一个
-//            return response;
-//        }
-//    }
 
     //react给studentid courseid stepid，返回给前端文件名（courseid，stepid）
     //jupyter调用后端,后端就要判断，并且调用接口，返回什么东西文件名和路径
@@ -112,14 +66,13 @@ public class ToJupyterController {
         } catch (Exception e){
             e.printStackTrace();
         }
-
+        Userinfo userinfo= userinfoMapper.selectByPrimaryKey(STDNum);
         if (list != null && list.size() == 0) {
 //            类名.方法()，初始化列表
             Choosecourse choosecourse2 = new Choosecourse(STDNum, courseId, stepId, new Date(), null, null);
             choosecourseMapper.insert(choosecourse2);
-            Userinfo userinfo= userinfoMapper.selectByPrimaryKey(STDNum);
-            operator.copyNbToUser(courseId,stepId,userinfo.getUserID());
         }
+        operator.copyNbToUser(courseId,stepId,userinfo.getUserID());
         hs.put("courseId", courseId);
         hs.put("stepId", stepId);
 
