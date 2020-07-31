@@ -95,7 +95,9 @@ public class ToJupyterController {
     //jupyter调用后端,后端就要判断，并且调用接口，返回什么东西文件名和路径
     //模板文件，目录，
     @PostMapping("/yanzheng")
-    public Map test2(@RequestBody Map<String, Object> para) throws JsonProcessingException, IOException {
+    public Map test2(@RequestBody Map<String, Object> para) {
+        System.out.println(new Date() + ":接口/yanzheng调用一次");
+
         HashMap<String, Object> hs = new HashMap<>();
 
         String STDNum = para.get("STDNum").toString();
