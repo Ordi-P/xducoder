@@ -26,18 +26,15 @@ public class CourseController {
         this.courseMapper=courseMapper;
         this.stepsMapper=stepsMapper;
     }
-//    @RequestMapping(value = "/api/courses",method = RequestMethod.GET)
+
     @GetMapping(value = "/api/courses")
     public List list()
     {
         System.out.println(new Date() + ":接口/api/courses调用一次");
 
-//        SimplePropertyPreFilter filter1 = new SimplePropertyPreFilter(Course.class, "CourseName","CourseID","CourseDescription","coverUrl");
-//        return JSON.toJSONString(courseMapper.list(),filter1) ;
         return courseMapper.list();
     }
 
-//    @RequestMapping(value="/api/course",method = RequestMethod.GET)
     @GetMapping(value="/api/course")
     public List findByPrimaryKey(@RequestParam(value="id",required=true) String courseID)
     {
@@ -46,20 +43,10 @@ public class CourseController {
         StepsExample stepsExample=new StepsExample();
         stepsExample.createCriteria().andCourseIDEqualTo(courseID);
         List<Steps> steps= stepsMapper.selectByExample(stepsExample);
-//        System.out.println("我在这里");
-//        SimplePropertyPreFilter filter2 = new SimplePropertyPreFilter("CourseID","CourseName","CourseNum","CompleteNum","CourseDIF","CourseDescription","chapters","stepID");
-//        filter2.getExcludes().add("CoverURL");
-//        JSONObject courseInfo=(JSONObject)JSONObject.toJSON(courseMapper.selectByPrimaryKey(courseID));
-//        String response=JSONObject.toJSONString(courseInfo,filter2);
-//        JSONObject raw= JSON.parseObject(response);
-//        raw.put("stepID",0);
-//        raw.put("chapters",steps);
-//        response=JSONObject.toJSONString(raw);
-//        return response;
+
         return steps;
     }
 
-//    @RequestMapping(value ="/api/search",method = RequestMethod.GET)
     @GetMapping(value ="/api/search")
     public Course searchCourse(@RequestParam(value = "q",required = true)String KeyWord)
     {

@@ -19,7 +19,6 @@ public class ChooseCourseController {
     @Autowired
     private CourseMapper courseMapper;
 
-//    @RequestMapping(value="/api/challenge",method=RequestMethod.POST,produces="application/json;charset=UTF-8")
     @PostMapping(value="/api/challenge")
     public String Challenge(@RequestBody Challenge challenge)
     {
@@ -76,10 +75,10 @@ public class ChooseCourseController {
             newstart.setSTDNum(STUNum);
             newstart.setRegDate(new Date());
             newstart.setCompleteDate(new Date());
-            newstart.setStepID(1);
+            newstart.setStepID(0);
             choosecourseMapper.insert(newstart);
 
-            return "插入新记录成功";
+            return "插入新记录成功:"+newstart.toString();
         }
     }
 }
