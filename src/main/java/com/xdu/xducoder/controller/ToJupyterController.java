@@ -71,8 +71,6 @@ public class ToJupyterController {
 //            类名.方法()，初始化列表
             Choosecourse choosecourse2 = new Choosecourse(STDNum, courseId, stepId, new Date(), null, null);
             choosecourseMapper.insert(choosecourse2);
-//            Userinfo userinfo= userinfoMapper.selectByPrimaryKey(STDNum);
-//            operator.copyNbToUser(courseId,stepId,userinfo.getUserID());
         }
         operator.copyNbToUser(courseId,stepId,userinfo.getUserID());
         hs.put("courseId", courseId);
