@@ -1,12 +1,8 @@
 package com.xdu.xducoder.controller;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xdu.xducoder.Dao.UserinfoMapper;
 import com.xdu.xducoder.Entity.Userinfo;
 
-import com.xdu.xducoder.Entity.UserinfoExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
