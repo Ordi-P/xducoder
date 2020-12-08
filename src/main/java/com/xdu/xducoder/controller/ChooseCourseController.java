@@ -31,7 +31,13 @@ public class ChooseCourseController {
 //        String response=JSONObject.toJSONString(choosecourseInfo);
         Integer stepID=1;
 
-        Choosecourse select = choosecourseMapper.selectByPrimaryKey(STUNum, CourseID, stepID);
+        Choosecourse select = null;
+        try{
+            select = choosecourseMapper.selectByPrimaryKey(STUNum, CourseID, stepID);
+        } catch (Exception e){
+            System.out.println("参数错误");
+            return "参数错误";
+        }
 //        if(select!=null)
 //        {
 //            return response;
